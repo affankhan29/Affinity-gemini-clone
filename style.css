@@ -13,6 +13,14 @@
     --primary-color: #242424;
     --secondary-hover-color: #444;
 }
+.light_mode{
+    --text-color: #222;
+    --subheading-color: #a0a0a0;
+    --placeholder-color: #6c6c6c;
+    --secondary-color: #fff;
+    --primary-color: #e6eaef;
+    --secondary-hover-color: #dbe1ea;
+}
 body{
     background: var(--primary-color);
 }
@@ -163,6 +171,7 @@ form.typing-form{
     padding: 2rem 1rem 12rem;
     max-height: 100vh;
     overflow-y: auto;
+    scrollbar-color:#999 transparent ;
 }
 
 .chat-list .message.incoming{
@@ -194,7 +203,7 @@ form.typing-form{
 .chat-list .message .text {
     color: var(--text-color);
 }
-.chat-list .message:not(.loading):hover .icon{
+.chat-list .message:not(.loading):hover .icon:not(.hide){
     visibility: visible;
 }
 .chat-list .message.loading .text {
