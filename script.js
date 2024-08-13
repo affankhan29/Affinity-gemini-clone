@@ -9,8 +9,19 @@ function createMessageElement(content,...classes){
     div.innerHTML = content;
     return div ;
 }
+
+function showTypingEffect(text, textDiv){
+  const words = text.split(' ');
+  let i = 0;
+  const timer = setInterval(() => {
+    textDiv.innerText += (i===0 ? "" : " ")+words[i++];
+    if(i === words.length){
+        clearInterval(timer);
+    }
+  },75);
+}
  async function generateAPIResponse(incomingDiv){
-      const text = incomingDiv.querySelector('.text');
+      const textDiv = incomingDiv.querySelector('.text');
       try{
         const response = await fetch(APIUrl,{
             method: 'POST',
@@ -26,8 +37,8 @@ function createMessageElement(content,...classes){
         });
         const data = await response.json();
         const responseText = data?.candidates[0].content.parts[0].text;
-        console.log(responseText);
-        text.innerHTML=responseText;
+        // console.log(responseText);
+        showTypingEffect(responseText,textDiv);
         incomingDiv.classList.remove('loading');
 
       }catch(error){
