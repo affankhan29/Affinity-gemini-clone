@@ -1,14 +1,28 @@
 const typingForm = document.querySelector('.typing-form');
 const chatList = document.querySelector('.chat-list');
+const suggestions = document.querySelectorAll('.suggestion');
+
+const header = document.querySelector('header');
 const toggleIcon= document.querySelector('#toggleIcon');
 const resetIcon= document.querySelector('#resetIcon');
 let userMessage = null;
+let isResponseGenerating = false;
 const APIKey="AIzaSyBZXmZNECCSkUYQhGlLOPMtyqLwfDLTjO0" ;
 const APIUrl= `https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${APIKey}`;
 function loadLocalStorage(){
   const savedChat = localStorage.getItem('chatlist');
   chatList.innerHTML=savedChat ||  '';
   chatList.scrollTo(0,chatList.scrollHeight);
+  if(savedChat){
+    header.classList.add('hide-header');
+  }
+  else{
+    header.classList.remove('hide-header');
+    header.classList.add('header');
+    
+  }
+ 
+
 
 }
 loadLocalStorage();
@@ -28,6 +42,7 @@ function showTypingEffect(text, textDiv , incomingDiv){
     incomingDiv.querySelector('.icon').classList.add('hide');
     if(i === words.length){
         clearInterval(timer);
+        isResponseGenerating = false;
         incomingDiv.querySelector('.icon').classList.remove('hide');
         localStorage.setItem('chatlist',chatList.innerHTML);
       
@@ -58,6 +73,7 @@ function showTypingEffect(text, textDiv , incomingDiv){
         incomingDiv.classList.remove('loading');
 
       }catch(error){
+        isResponseGenerating = false;
         console.log(error);
       }
 }
@@ -79,15 +95,19 @@ function showLoadingAnimation(){
     generateAPIResponse(incomingDiv);
 }
 function handleOutgoingChat(){
-    userMessage = typingForm.querySelector('.typing-input').value.trim();
-    if(!userMessage) return;
-    const html = ` <div class="message-content">
+    userMessage = typingForm.querySelector('.typing-input').value.trim() || userMessage;
+    if(!userMessage || isResponseGenerating) return;
+    isResponseGenerating = true;
+       const html = ` <div class="message-content">
                    <img src="images/images/user.jpg" class="avatar" alt="">
                    <p class="text">${userMessage}</p>
                 </div>`;
    const outgoingDiv =  createMessageElement(html,'outgoing');
     chatList.appendChild(outgoingDiv);
     typingForm.reset();
+    header.classList.add('hide-header');
+    header.classList.remove('header');
+
     chatList.scrollTo(0,chatList.scrollHeight);
     setTimeout(() => {
         showLoadingAnimation();
@@ -119,6 +139,14 @@ function toggleTheme(toggleIcon){
   resetIcon.addEventListener('click', ()=>{
     localStorage.clear();
     chatList.innerHTML= '';
+    window.location.reload();
   });
  }
 resetLocalStorage();
+suggestions.forEach(suggestion => {
+  suggestion.addEventListener('click', (e) => {
+    userMessage = suggestion.querySelector('.text').innerText;
+    handleOutgoingChat();
+  });
+  
+});
