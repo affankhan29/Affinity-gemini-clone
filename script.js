@@ -8,7 +8,8 @@ const resetIcon = document.querySelector('#resetIcon');
 let userMessage = null;
 let isResponseGenerating = false;
 const APIKey = "AIzaSyAgu1T-8iOOpdkNTy6KURfjFfhJ_j6KvSI"; 
-const APIUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${APIKey}`;
+// UPDATED FOR 2026: Use gemini-3-flash-preview
+const APIUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${APIKey}`;
 function loadLocalStorage(){
   const savedChat = localStorage.getItem('chatlist');
   chatList.innerHTML=savedChat ||  '';
