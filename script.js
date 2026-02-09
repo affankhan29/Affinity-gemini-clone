@@ -1,14 +1,14 @@
 const typingForm = document.querySelector('.typing-form');
 const chatList = document.querySelector('.chat-list');
 const suggestions = document.querySelectorAll('.suggestion');
-
 const header = document.querySelector('header');
-const toggleIcon= document.querySelector('#toggleIcon');
-const resetIcon= document.querySelector('#resetIcon');
+const toggleIcon = document.querySelector('#toggleIcon');
+const resetIcon = document.querySelector('#resetIcon');
+
 let userMessage = null;
 let isResponseGenerating = false;
-const APIKey="AIzaSyBZXmZNECCSkUYQhGlLOPMtyqLwfDLTjO0" ;
-const APIUrl= `https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${APIKey}`;
+const APIKey = "AIzaSyAgu1T-8iOOpdkNTy6KURfjFfhJ_j6KvSI"; 
+const APIUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${APIKey}`;
 function loadLocalStorage(){
   const savedChat = localStorage.getItem('chatlist');
   chatList.innerHTML=savedChat ||  '';
